@@ -1,0 +1,33 @@
+./example1.out ex.dat 
+
+-- incidnt field data --
+filename                 : ifd.txt
+planewave amplitude E0   :      1+      0I
+wavelength in vacuum     :               1
+refractive index         :               1
+incident angle      [rad]:               0
+-- medium data --
+medium data file name                  : medium_data.txt
+medium (domain) id  1 refractive index :     1.6 +        0I
+-- mesh data --
+mesh data file name        : circle_1.msh
+numnber of nodes           :      320
+number of defined elements :      320
+
+Total electromagnetic field at r=(  0.3, 0 )
+type=0 setting ( 3 point Gauss-Legendre )
+Ex =  1.57091136973572e-14 +2.91124221084246e-13 I 
+Ey = -3.90296733380021e-01 -1.01396037043333e+00 I 
+Hz =  3.16393278910702e-01 -3.19951259925832e+00 I 
+type=1 setting ( 7 point Gauss-Kronrod )
+Ex =  1.55310334905290e-14 +2.91420533538034e-13 I 
+Ey = -3.90296733384750e-01 -1.01396037044052e+00 I 
+Hz =  3.16393278902704e-01 -3.19951259926152e+00 I 
+
+Radiation force and torque
+type=0 ( 3 point Gauss-Legendre ) 
+(Fx,Fy) = ( 3.20967362838893e-01, 1.58082097759249e-14)
+   Nz   =   6.72408634848354e-17, center of rotation ( 0, 0)
+type=1 ( 7 point Gauss-Kronrod ) 
+(Fx,Fy) = ( 3.20967326885723e-01, 1.59082951889725e-14)
+   Nz   =   3.71190166277569e-16, center of rotation ( 0, 0)

@@ -1,0 +1,6 @@
+## medium data file for bem2_emf_tm
+# number of mediums
+2
+# real(refractive_index) imag(refractive_index)  
+1.60 0.0
+0.05 4.0 

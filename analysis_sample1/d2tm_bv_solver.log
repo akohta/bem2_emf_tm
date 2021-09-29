@@ -1,0 +1,25 @@
+../d2tm_bv_solver ifd.txt medium_data.txt circle_h2_1.msh ex1.dat
+
+-- incidnt field data --
+filename                 : ifd.txt
+planewave amplitude E0   :      1+      0I
+wavelength in vacuum     :               1
+refractive index         :               1
+incident angle      [rad]:               0
+-- medium data --
+medium data file name                  : medium_data.txt
+medium (domain) id  1 refractive index :     1.6 +        0I
+medium (domain) id  2 refractive index :    0.05 +        4I
+-- mesh data --
+mesh data file name        : circle_h2_1.msh
+numnber of nodes           :      831
+number of defined elements :      832
+
+solve electromagnetic field boundary value 
+  coefficient matrix           finished
+  solve boundary value Hz      finished
+  boundary value Ex Ey         finished
+  boundary value of domain 0   finished
+  boundary value of domain 1   finished
+  boundary value of domain 2   finished
+elapsed time : 3 (sec)
