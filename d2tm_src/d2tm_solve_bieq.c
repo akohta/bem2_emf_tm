@@ -436,13 +436,11 @@ void solve_LU(CMD *cm)
 
 void input_bmatrix(CMD *cm,DOMD *md,double complex **dudn)
 {
-  int j,s,sn;
+  int s,sn;
 
-  for(j=0;j<cm->N;j++){
-    for(s=1;s<=cm->N/3;s++){
-      for(sn=0;sn<3;sn++){
-        dudn[s][sn]=cm->B[3*(s-1)+sn].real+cm->B[3*(s-1)+sn].imag*I;
-      }
+  for(s=1;s<=cm->N/3;s++){
+    for(sn=0;sn<3;sn++){
+      dudn[s][sn]=cm->B[3*(s-1)+sn].real+cm->B[3*(s-1)+sn].imag*I;
     }
   }
 }

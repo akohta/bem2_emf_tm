@@ -41,7 +41,7 @@ void print_data(DOMD *md)
   print_mesh_data(md);
   printf("\n");
 
-  if(md->ra!=0.0 || md->tx!=0.0 || md->tx!=0.0){
+  if(md->ra!=0.0 || md->tx!=0.0 || md->ty!=0.0){
     printf("-- rotation and translation settings --\n");
     printf("rotation angle                    [rad]: %8.7g\n",md->ra);
     printf("x-component of translation vector      : %8.7g\n",md->tx);
@@ -60,7 +60,7 @@ void print_data_MKSA(DOMD *md)
   print_mesh_data(md);
   printf("\n");
   
-  if(md->ra!=0.0 || md->tx!=0.0 || md->tx!=0.0){
+  if(md->ra!=0.0 || md->tx!=0.0 || md->ty!=0.0){
     printf("-- rotation and translation settings --\n");
     printf("rotation angle                    [rad]: %8.7g\n",md->ra);
     printf("x-component of translation vector   [m]: %8.7g\n",OSUtoMKSA_length(md->tx));
@@ -80,7 +80,7 @@ void initialize_domd(DOMD *md)
   // medium
   md->n[0]=md->wd.ne;
   // rotation and translation
-  if(md->ra!=0.0 || md->tx!=0.0 || md->tx!=0.0) rotation_translation_obj(md);
+  if(md->ra!=0.0 || md->tx!=0.0 || md->ty!=0.0) rotation_translation_obj(md);
   // element constant
   init_elem_const(&(md->bd));
   // sub domain
