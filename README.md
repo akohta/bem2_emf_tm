@@ -23,7 +23,7 @@ Gmsh is used for create a mesh data of object.  
    It was created by using Gmsh geometry file circle_1.geo in the mesh_sample folder. 
    The d2tm_bv_solver solves boundary integral equations with the specified datafiles, outputs the results to a binary file with the output datafile name. 
    It has optional arguments for rotation and translation of the object.
-   For the rotation angle around the z-axis is theta and the translation vector is (tx, ty, tz), the arguments are './d2tm_bv_solver ifd.txt medium_data.txt circle_1.msh ex.dat theta tx ty tz'.
+   For the rotation angle around the z-axis is theta and the translation vector is (tx, ty), the arguments are './d2tm_bv_solver ifd.txt medium_data.txt circle_1.msh ex.dat theta tx ty'.
    As a simple representation of the analysis model, the nodes used for the surface integral are output as a point cloud data. 
    In this example, the file ex.particles is output and the visualization result is particles.png (using Gnuplot script gscript_particles.plt).  
 
@@ -42,7 +42,7 @@ Gmsh is used for create a mesh data of object.  
    The image files are output to the folder which has a name adding "images" to the datafile name specified in the argument (file-extension is excluded). 
    Each image file has a name that indicates the cross section, field component and number of time steps (ex. xy_Hz_014.png). 
    The color bar is output as color_bar.png in the same folder. 
-   The range of color bar in each cross section is output to the xy_info.txt file. 
+   The range of color bar is output to the xy_info.txt file. 
    The xy_Hz.gif, xy_Ex.gif and xy_Ey.gif are animated gifs that concatenate the png files created by using the shell script gif_animation.sh.  
    
 Please see d2tm_src/bem2_emf_tm.h for detail of functions. 
