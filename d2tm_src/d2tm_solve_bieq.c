@@ -366,7 +366,10 @@ void create_amatrix_subdomain(int did,CMD *cm,DOMD *md)
   tG=(double complex *)m_alloc2(cm->N,sizeof(double complex),"create_amatrix_subdomain(),tG");
   
   for(j=0;j<cm->N;j++){
-    fread(tG,cm->N,sizeof(double complex),fg);
+    if(fread(tG,sizeof(double complex),cm->N,fg)!=cm->N){
+      printf("d3tm_solve_bieq.c, create_amatrix_subdomain(), failed to read the tG. exit...\n");
+      exit(1);
+    }
     for(s=0;s<cm->N;s++){
       cm->A[j*cm->N+s].real=creal(tG[s]);
       cm->A[j*cm->N+s].imag=cimag(tG[s]);  
@@ -389,7 +392,10 @@ void create_bmatrix_subdomain(int did,CMD *cm,double complex **u)
   for(j=0;j<cm->N;j++){
     cm->B[j].real=0.0;
     cm->B[j].imag=0.0;
-    fread(tH,cm->N,sizeof(double complex),fh);
+    if(fread(tH,sizeof(double complex),cm->N,fh)!=cm->N){
+      printf("d2tm_solve_bieq.c, create_bmatrix_subdomain(), failed to read the tH. exit...\n");
+      exit(1);
+    }
     for(s=1;s<=cm->N/3;s++){
       for(sn=0;sn<3;sn++){
         tc=tH[3*(s-1)+sn]*u[s][sn];

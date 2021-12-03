@@ -134,47 +134,170 @@ void dat_read (char *fname,DOMD *md)
 
   if((fp=fopen(fname,"rb"))==NULL){     printf("Failed to open the %s file.\n",fname);    exit(1); }
   // fname
-  fread(md->med_fn,sizeof(int),128,fp);
-  fread(md->msh_fn,sizeof(int),128,fp);
-    // rotation and translation data
-  fread(&(md->ra),sizeof(double),1,fp);
-  fread(&(md->tx),sizeof(double),1,fp);
-  fread(&(md->ty),sizeof(double),1,fp);
+  if(fread(md->med_fn,sizeof(int),128,fp)!=128){
+    printf("d2tm_setup.c, dat_read(), failed to read the med_fn. exit...\n");
+    exit(1);
+  }
+  if(fread(md->msh_fn,sizeof(int),128,fp)!=128){
+    printf("d2tm_setup.c, dat_read(), failed to read the msh_fn. exit...\n");
+    exit(1);
+  }
+  // rotation and translation data
+  if(fread(&(md->ra),sizeof(double),1,fp)!=1){
+    printf("d2tm_setup.c, dat_read(), failed to read the ra. exit...\n");
+    exit(1);
+  }
+  if(fread(&(md->tx),sizeof(double),1,fp)!=1){
+    printf("d2tm_setup.c, dat_read(), failed to read the tx. exit...\n");
+    exit(1);
+  }
+  if(fread(&(md->ty),sizeof(double),1,fp)!=1){
+    printf("d2tm_setup.c, dat_read(), failed to read the ty. exit...\n");
+    exit(1);
+  }
   // material def
-  fread(&(md->MN),sizeof(int),1,fp);
+  if(fread(&(md->MN),sizeof(int),1,fp)!=1){
+    printf("d2tm_setup.c, dat_read(), failed to read the MN. exit...\n");
+    exit(1);
+  }
   md->n=(double complex *)malloc(sizeof(double complex)*(md->MN+1)); // malloc
-  fread(md->n,sizeof(double complex),md->MN+1,fp);
+  if(fread(md->n,sizeof(double complex),md->MN+1,fp)!=md->MN+1){
+    printf("d2tm_setup.c, dat_read(), failed to read the n. exit...\n");
+    exit(1);
+  }
   // incident field def
-  fread(&(md->wd),sizeof(INFD),1,fp);
+  if(fread(&(md->wd),sizeof(INFD),1,fp)!=1){
+    printf("d2tm_setup.c, dat_read(), failed to read the wd. exit...\n");
+    exit(1);
+  }
   // boundary def
-  fread(&(md->bd.Nn),sizeof(int),1,fp);
-  fread(&(md->bd.Ne),sizeof(int),1,fp);
+  if(fread(&(md->bd.Nn),sizeof(int),1,fp)!=1){
+    printf("d2tm_setup.c, dat_read(), failed to read the Nn. exit...\n");
+    exit(1);
+  }
+  if(fread(&(md->bd.Ne),sizeof(int),1,fp)!=1){
+    printf("d2tm_setup.c, dat_read(), failed to read the Ne. exit...\n");
+    exit(1);
+  }
   malloc_node(&(md->bd));  malloc_elem(&(md->bd)); // malloc
-  fread(md->bd.et,sizeof(double),7,fp);
-  fread(md->bd.wg,sizeof(double),7,fp);  fread(md->bd.wk,sizeof(double),7,fp);
-  fread(md->bd.M,sizeof(double),21,fp);
-  fread(md->bd.xn,sizeof(double),md->bd.Nn+1,fp);  fread(md->bd.yn,sizeof(double),md->bd.Nn+1,fp);
-  fread(md->bd.md, sizeof(int),md->bd.Ne+1,fp);  fread(md->bd.sd, sizeof(int),md->bd.Ne+1,fp);
-  fread(md->bd.egd,sizeof(int),md->bd.Ne+1,fp);
-  fread(md->bd.xh,sizeof(double),GLH,fp);  fread(md->bd.wh,sizeof(double),GLH,fp);
-  for(i=0;i<=md->bd.Ne;i++) fread(md->bd.ed[i],sizeof(int),3,fp);
-  for(i=0;i<=md->bd.Ne;i++) fread(md->bd.x[i],sizeof(double),7,fp);
-  for(i=0;i<=md->bd.Ne;i++) fread(md->bd.y[i],sizeof(double),7,fp);
-  for(i=0;i<=md->bd.Ne;i++) fread(md->bd.dx[i],sizeof(double),7,fp);
-  for(i=0;i<=md->bd.Ne;i++) fread(md->bd.dy[i],sizeof(double),7,fp);
-  for(i=0;i<=md->bd.Ne;i++) fread(md->bd.ui[i],sizeof(double complex),3,fp);
-  for(i=0;i<=md->bd.Ne;i++) fread(md->bd.duidn[i],sizeof(double complex),3,fp);
+  if(fread(md->bd.et,sizeof(double),7,fp)!=7){
+    printf("d2tm_setup.c, dat_read(), failed to read the et. exit...\n");
+    exit(1);
+  }
+  if(fread(md->bd.wg,sizeof(double),7,fp)!=7){
+    printf("d2tm_setup.c, dat_read(), failed to read the wg. exit...\n");
+    exit(1);
+  }  
+  if(fread(md->bd.wk,sizeof(double),7,fp)!=7){
+    printf("d2tm_setup.c, dat_read(), failed to read the wk. exit...\n");
+    exit(1);
+  }
+  if(fread(md->bd.M,sizeof(double),21,fp)!=21){
+    printf("d2tm_setup.c, dat_read(), failed to read the M. exit...\n");
+    exit(1);
+  }
+  if(fread(md->bd.xn,sizeof(double),md->bd.Nn+1,fp)!=md->bd.Nn+1){
+    printf("d2tm_setup.c, dat_read(), failed to read the xn. exit...\n");
+    exit(1);
+  }  
+  if(fread(md->bd.yn,sizeof(double),md->bd.Nn+1,fp)!=md->bd.Nn+1){
+    printf("d2tm_setup.c, dat_read(), failed to read the yn. exit...\n");
+    exit(1);
+  }
+  if(fread(md->bd.md, sizeof(int),md->bd.Ne+1,fp)!=md->bd.Ne+1){
+    printf("d2tm_setup.c, dat_read(), failed to read the md. exit...\n");
+    exit(1);
+  }  
+  if(fread(md->bd.sd, sizeof(int),md->bd.Ne+1,fp)!=md->bd.Ne+1){
+    printf("d2tm_setup.c, dat_read(), failed to read the sd. exit...\n");
+    exit(1);
+  }
+  if(fread(md->bd.egd,sizeof(int),md->bd.Ne+1,fp)!=md->bd.Ne+1){
+    printf("d2tm_setup.c, dat_read(), failed to read the edg. exit...\n");
+    exit(1);
+  }
+  if(fread(md->bd.xh,sizeof(double),GLH,fp)!=GLH){
+    printf("d2tm_setup.c, dat_read(), failed to read the xh. exit...\n");
+    exit(1);
+  }
+  if(fread(md->bd.wh,sizeof(double),GLH,fp)!=GLH){
+    printf("d2tm_setup.c, dat_read(), failed to read the wh. exit...\n");
+    exit(1);
+  }
+  for(i=0;i<=md->bd.Ne;i++){
+    if(fread(md->bd.ed[i],sizeof(int),3,fp)!=3){
+      printf("d2tm_setup.c, dat_read(), failed to read the ed[i]. exit...\n");
+      exit(1);
+    }
+  }
+  for(i=0;i<=md->bd.Ne;i++){
+    if(fread(md->bd.x[i],sizeof(double),7,fp)!=7){
+      printf("d2tm_setup.c, dat_read(), failed to read the x[i]. exit...\n");
+      exit(1);
+    }
+  }
+  for(i=0;i<=md->bd.Ne;i++){
+    if(fread(md->bd.y[i],sizeof(double),7,fp)!=7){
+      printf("d2tm_setup.c, dat_read(), failed to read the y[i]. exit...\n");
+      exit(1);
+    }
+  }
+  for(i=0;i<=md->bd.Ne;i++){
+    if(fread(md->bd.dx[i],sizeof(double),7,fp)!=7){
+      printf("d2tm_setup.c, dat_read(), failed to read the dx[i]. exit...\n");
+      exit(1);
+    }
+  }
+  for(i=0;i<=md->bd.Ne;i++){
+    if(fread(md->bd.dy[i],sizeof(double),7,fp)!=7){
+      printf("d2tm_setup.c, dat_read(), failed to read the dy[i]. exit...\n");
+      exit(1);
+    }
+  }
+  for(i=0;i<=md->bd.Ne;i++){
+    if(fread(md->bd.ui[i],sizeof(double complex),3,fp)!=3){
+      printf("d2tm_setup.c, dat_read(), failed to read the ui[i]. exit...\n");
+      exit(1);
+    }
+  }
+  for(i=0;i<=md->bd.Ne;i++){
+    if(fread(md->bd.duidn[i],sizeof(double complex),3,fp)!=3){
+      printf("d2tm_setup.c, dat_read(), failed to read the duidn[i]. exit...\n");
+      exit(1);
+    }
+  }
   // sub domain def
   malloc_sub_domain(md);
   for(i=0;i<=md->MN;i++){
-    fread(md->bd.sb[i].eid,sizeof(int),md->bd.sb[i].Ne+1,fp);
+    if(fread(md->bd.sb[i].eid,sizeof(int),md->bd.sb[i].Ne+1,fp)!=md->bd.sb[i].Ne+1){
+      printf("d2tm_setup.c, dat_read(), failed to read the sb[i]. exit...\n");
+      exit(1);
+    }
     for(j=0;j<=md->bd.sb[i].Ne;j++){
-      fread(md->bd.sb[i].u[j],sizeof(double complex),3,fp);
-      fread(md->bd.sb[i].v[j],sizeof(double complex),3,fp);
-      fread(md->bd.sb[i].w[j],sizeof(double complex),3,fp);
-      fread(md->bd.sb[i].dudn[j],sizeof(double complex),3,fp);
-      fread(md->bd.sb[i].dvdn[j],sizeof(double complex),3,fp);
-      fread(md->bd.sb[i].dwdn[j],sizeof(double complex),3,fp);
+      if(fread(md->bd.sb[i].u[j],sizeof(double complex),3,fp)!=3){
+        printf("d2tm_setup.c, dat_read(), failed to read the u[j]. exit...\n");
+        exit(1);
+      }
+      if(fread(md->bd.sb[i].v[j],sizeof(double complex),3,fp)!=3){
+        printf("d2tm_setup.c, dat_read(), failed to read the v[j]. exit...\n");
+        exit(1);
+      }
+      if(fread(md->bd.sb[i].w[j],sizeof(double complex),3,fp)!=3){
+        printf("d2tm_setup.c, dat_read(), failed to read the w[j]. exit...\n");
+        exit(1);
+      }
+      if(fread(md->bd.sb[i].dudn[j],sizeof(double complex),3,fp)!=3){
+        printf("d2tm_setup.c, dat_read(), failed to read the dudn[j]. exit...\n");
+        exit(1);
+      }
+      if(fread(md->bd.sb[i].dvdn[j],sizeof(double complex),3,fp)!=3){
+        printf("d2tm_setup.c, dat_read(), failed to read the dvdn[j]. exit...\n");
+        exit(1);
+      }
+      if(fread(md->bd.sb[i].dwdn[j],sizeof(double complex),3,fp)!=3){
+        printf("d2tm_setup.c, dat_read(), failed to read the dwdn[j]. exit...\n");
+        exit(1);
+      }
     }
   }
   fclose(fp);
@@ -233,20 +356,21 @@ void dat_write(char *fname,DOMD *md)
 void output_node_particles(char *fname,DOMD *md)
 {
   FILE *fp;
-  int s1,s2,i,j;
-  char *sd,fo[128]="",tmp[128]="";
+  int s1,i,j;
+  char *sd,fo[256]="",tf[200]="";
 
-  sd=strrchr(fname,'.');
-  if(sd==NULL){ // no file extension
-    sprintf(fo,"%s.particles",fname);
+  s1=strlen(fname);
+  if(s1>200){
+    printf("d2te_setup.c, output_node_particles(), file name is too long. exit...\n");
+    exit(1);
   }
-  else {
-    s1=strlen(fname);
-    s2=strlen(sd);
-    strncpy(tmp,fname,s1-s2);
-    sprintf(fo,"%s.particles",tmp);
+  sprintf(fo,"%s",fname);
+  sd=strrchr(fo,'.');
+  if(sd!=NULL){
+    strncpy(tf,fname,s1-strlen(sd));
+    sprintf(fo,"%s.particles",tf);
   }
-  
+
   if((fp=fopen(fo,"wt"))==NULL){    printf("Can not open the %s file.\n",fo);    exit(1);  }
   fprintf(fp,"# x y object_id\n");
   
@@ -286,14 +410,34 @@ void read_medium_data(char *med_fn,DOMD *md)
 
   if((fp=fopen(med_fn,"rt"))==NULL){    printf("Can not open the '%s' file. Exit...\n",med_fn);    exit(1);  }
   strcpy(md->med_fn,med_fn);
-  fgets(buf,256,fp);
-  fgets(buf,256,fp);
-  fscanf(fp,"%d\n",&ti);  md->MN=ti;
+  if(fgets(buf,256,fp)==NULL){
+    printf("d2tm_setup.c, read_medium_data(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("d2tm_setup.c, read_medium_data(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%d\n",&ti)!=1){
+    printf("d2tm_setup.c, read_medium_data(), failed to read the MN. exit...\n");
+    exit(1);
+  }
+  md->MN=ti;
   md->n=(double complex *)m_alloc2(md->MN+1,sizeof(double complex),"read_medium_data(), md->n");
-  fgets(buf,256,fp);
+  if(fgets(buf,256,fp)==NULL){
+    printf("d2tm_setup.c, read_medium_data(), failed to read the line. exit...\n");
+    exit(1);
+  }
   for(i=1;i<=md->MN;i++){
-    fscanf(fp,"%lf",&td);
-    fscanf(fp,"%lf",&td2); md->n[i]=td+td2*I;
+    if(fscanf(fp,"%lf",&td)!=1){
+      printf("d2tm_setup.c, read_medium_data(), failed to read the real(n). exit...\n");
+      exit(1);
+    }
+    if(fscanf(fp,"%lf",&td2)!=1){
+      printf("d2tm_setup.c, read_medium_data(), failed to read the imag(n). exit...\n");
+      exit(1);
+    }
+    md->n[i]=td+td2*I;
   }
   fclose(fp);
 }
@@ -310,7 +454,7 @@ void print_medium_data(DOMD *md)
 
 void read_mesh_data(char *msh_fn,DOMD *md)
 {
-  void malloc_node(BOUD *bd);
+    void malloc_node(BOUD *bd);
   void malloc_elem(BOUD *bd);
   
   FILE *fp;
@@ -320,53 +464,112 @@ void read_mesh_data(char *msh_fn,DOMD *md)
 
   if((fp=fopen(msh_fn,"rt"))==NULL){    printf("Can not open the '%s' file. Exit...\n",msh_fn);    exit(1);  }
   strcpy(md->msh_fn,msh_fn);
-  fgets(buf,256,fp);
-  fscanf(fp,"%lf",&td);
+  if(fgets(buf,256,fp)==NULL){
+    printf("d2te_setup.c, read_mesh_data(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf",&td)!=1){
+    printf("d2te_setup.c, read_mesh_data(), failed to read the file version. exit...\n");
+    exit(1);
+  }
   // check file version
   if(td<MSHVER){
     printf("This program supports mesh file version %g later. Reading file version is %g. Exit...\n",MSHVER,td);
     fclose(fp);
     exit(1);
   }
-  fscanf(fp,"%d",&ti);
+  if(fscanf(fp,"%d",&ti)!=1){
+    printf("d2te_setup.c, read_mesh_data(), failed to read the data format. exit...\n");
+    exit(1);
+  }
   //check data format
   if(ti!=MSHASCI){
     printf("This program supports 'ASCII' data format mesh file. Exit...\n");
     fclose(fp);
     exit(1);
   }
-  fscanf(fp,"%d\n",&ti);
+  if(fscanf(fp,"%d\n",&ti)!=1){
+    printf("d2te_setup.c, read_mesh_data(), failed to read the precision. exit...\n");
+    exit(1);
+  }
   //check data precision
   if(ti!=MSHPREC){
     printf("This program supports double precision mesh data. Exit...\n");
     fclose(fp);
     exit(1);
   }
-  fgets(buf,256,fp);
-  fgets(buf,256,fp);
+  if(fgets(buf,256,fp)==NULL){
+    printf("d2te_setup.c, read_mesh_data(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("d2te_setup.c, read_mesh_data(), failed to read the line. exit...\n");
+    exit(1);
+  }
 
-  fscanf(fp,"%d",&ti);
+  if(fscanf(fp,"%d",&ti)!=1){
+    printf("d2te_setup.c, read_mesh_data(), failed to read the Nn. exit...\n");
+    exit(1);
+  }
   md->bd.Nn=ti;
   malloc_node(&(md->bd));
   for(i=1;i<=md->bd.Nn;i++){
-    fscanf(fp,"%d",&ti);    if(ti!=i)       printf("bad id %d\n",ti);
-    fscanf(fp,"%lf",&td);  md->bd.xn[i]=td;
-    fscanf(fp,"%lf",&td);  md->bd.yn[i]=td;
-    fscanf(fp,"%lf\n",&td);
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the id. exit...\n");
+      exit(1);
+    }
+    if(ti!=i) printf("bad id %d\n",ti);
+    if(fscanf(fp,"%lf",&td)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the node x. exit...\n");
+      exit(1);
+    }
+    md->bd.xn[i]=td;
+    if(fscanf(fp,"%lf",&td)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the node y. exit...\n");
+      exit(1);
+    }
+    md->bd.yn[i]=td;
+    if(fscanf(fp,"%lf\n",&td)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the node z. exit...\n");
+      exit(1);
+    }
   }
-  fgets(buf,256,fp);
-  fgets(buf,256,fp);
+  if(fgets(buf,256,fp)==NULL){
+    printf("d2te_setup.c, read_mesh_data(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("d2te_setup.c, read_mesh_data(), failed to read the line. exit...\n");
+    exit(1);
+  }
 
-  fscanf(fp,"%d",&ti);
+  if(fscanf(fp,"%d",&ti)!=1){
+    printf("d2te_setup.c, read_mesh_data(), failed to read the Ne. exit...\n");
+    exit(1);
+  }
   md->bd.Ne=ti/2;
   malloc_elem(&(md->bd));
   for(i=1;i<=md->bd.Ne;i++){
     // main
-    fscanf(fp,"%d",&ti);   if(ti!=i*2-1)    printf("bad id %d\n",ti);
-    fscanf(fp,"%d",&ti);   if(ti!=ELEMTYPE) printf("bad element type. element type must be %d\n",ELEMTYPE);
-    fscanf(fp,"%d",&ti);
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the main id. exit...\n");
+      exit(1);
+    }
+    if(ti!=i*2-1)    printf("bad id %d\n",ti);
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the element type. exit...\n");
+      exit(1);
+    }
+    if(ti!=ELEMTYPE) printf("bad element type. element type must be %d\n",ELEMTYPE);
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the ti. exit...\n");
+      exit(1);
+    }
     for(j=0;j<ti;j++){
-      fscanf(fp,"%d",&ti2);
+      if(fscanf(fp,"%d",&ti2)!=1){
+        printf("d2te_setup.c, read_mesh_data(), failed to read the ti2. exit...\n");
+        exit(1);
+      }
       if(j==0){
         if(ti2==OPENDID) ti2=0;
         if(md->MN>=ti2) md->bd.md[i]=ti2;
@@ -379,15 +582,41 @@ void read_mesh_data(char *msh_fn,DOMD *md)
         md->bd.egd[i]=ti2;
       }
     }
-    fscanf(fp,"%d",&ti);  md->bd.ed[i][0]=ti;
-    fscanf(fp,"%d",&ti);  md->bd.ed[i][1]=ti;
-    fscanf(fp,"%d",&ti);  md->bd.ed[i][2]=ti;
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the ed0. exit...\n");
+      exit(1);
+    }
+    md->bd.ed[i][0]=ti;
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the ed1. exit...\n");
+      exit(1);
+    }
+    md->bd.ed[i][1]=ti;
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the line. exit...\n");
+      exit(1);
+    }
+    md->bd.ed[i][2]=ti;
     // shared
-    fscanf(fp,"%d",&ti);   if(ti!=i*2)    printf("bad id :%d\n",ti);
-    fscanf(fp,"%d",&ti);   if(ti!=ELEMTYPE) printf("bad element type. element type must be %d\n",ELEMTYPE);
-    fscanf(fp,"%d",&ti);
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the id. exit...\n");
+      exit(1);
+    }
+    if(ti!=i*2)    printf("bad id :%d\n",ti);
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the element type. exit...\n");
+      exit(1);
+    }
+    if(ti!=ELEMTYPE) printf("bad element type. element type must be %d\n",ELEMTYPE);
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the ti. exit...\n");
+      exit(1);
+    }
     for(j=0;j<ti;j++){
-      fscanf(fp,"%d",&ti2);
+      if(fscanf(fp,"%d",&ti2)!=1){
+        printf("d2te_setup.c, read_mesh_data(), failed to read the ti2. exit...\n");
+        exit(1);
+      }
       if(j==0){
         if(ti2==OPENDID) ti2=0;
         if(md->MN>=ti2) md->bd.sd[i]=ti2;
@@ -397,9 +626,21 @@ void read_mesh_data(char *msh_fn,DOMD *md)
         }
       }
     }
-    fscanf(fp,"%d",&ti);  if(md->bd.ed[i][1]!=ti) printf("node id miss matched. check element id %d\n",i*2);
-    fscanf(fp,"%d",&ti);  if(md->bd.ed[i][0]!=ti) printf("node id miss matched. check element id %d\n",i*2);
-    fscanf(fp,"%d",&ti);  if(md->bd.ed[i][2]!=ti) printf("node id miss matched. check element id %d\n",i*2);
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the ed0. exit...\n");
+      exit(1);
+    }
+    if(md->bd.ed[i][1]!=ti) printf("node id miss matched. check element id %d\n",i*2);
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the ed1. exit...\n");
+      exit(1);
+    }
+    if(md->bd.ed[i][0]!=ti) printf("node id miss matched. check element id %d\n",i*2);
+    if(fscanf(fp,"%d",&ti)!=1){
+      printf("d2te_setup.c, read_mesh_data(), failed to read the ed2. exit...\n");
+      exit(1);
+    }
+    if(md->bd.ed[i][2]!=ti) printf("node id miss matched. check element id %d\n",i*2);
     
     // exchange open region to main domain
     if(md->bd.sd[i]==0){ // open region is sub domain

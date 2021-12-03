@@ -14,13 +14,39 @@ void read_infd(char *fname,INFD *wd)
   if((fp=fopen(fname,"rt"))==NULL){    printf("Can not open the '%s' file. Exit...\n",fname);    exit(1);  }
   strcpy(wd->fname,fname);
   char buf[256]="";   double tmpd,tmpd2;
-  fgets(buf,256,fp);  fgets(buf,256,fp);
+  if(fgets(buf,256,fp)==NULL){
+    printf("incident_field.c, read_infd(), failed to read the line. exit...\n");
+    exit(1);
+  }
+  if(fgets(buf,256,fp)==NULL){
+    printf("incident_field.c, read_infd(), failed to read the line. exit...\n");
+    exit(1);
+  }
 
-  fscanf(fp,"%lf",&tmpd);
-  fscanf(fp,"%lf",&tmpd2);   wd->E0      =tmpd+I*tmpd2;
-  fscanf(fp,"%lf",&tmpd);    wd->lambda0 =tmpd;
-  fscanf(fp,"%lf",&tmpd);    wd->ne      =tmpd;
-  fscanf(fp,"%lf\n",&tmpd);  wd->angle   =tmpd;
+  if(fscanf(fp,"%lf",&tmpd)!=1){
+    printf("incident_field.c, read_infd(), failed to read the real(E0). exit...\n");
+    exit(1);
+  }
+  if(fscanf(fp,"%lf",&tmpd2)!=1){
+    printf("incident_field.c, read_infd(), failed to read the imag(E0). exit...\n");
+    exit(1);
+  }
+  wd->E0      =tmpd+I*tmpd2;
+  if(fscanf(fp,"%lf",&tmpd)!=1){
+    printf("incident_field.c, read_infd(), failed to read the lambda0. exit...\n");
+    exit(1);
+  }
+  wd->lambda0 =tmpd;
+  if(fscanf(fp,"%lf",&tmpd)!=1){
+    printf("incident_field.c, read_infd(), failed to read the ne. exit...\n");
+    exit(1);
+  }
+  wd->ne      =tmpd;
+  if(fscanf(fp,"%lf\n",&tmpd)!=1){
+    printf("incident_field.c, read_infd(), failed to read the angle. exit...\n");
+    exit(1);
+  }
+  wd->angle   =tmpd;
   fclose(fp);
 
   // init parameter
